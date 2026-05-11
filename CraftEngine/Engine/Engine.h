@@ -6,6 +6,7 @@ namespace Craft
 {
 	// 전방선언 (컴파일 시간 단축).
 	class Level;
+	class Input;
 
 	class Engine
 	{
@@ -75,6 +76,9 @@ namespace Craft
 	
 		// 추가 요청된 레벨
 		std::shared_ptr<Level> nextLevel;
+
+		// 입력 시스템.
+		std::unique_ptr<Input> input;
 	};
 }
 

@@ -1,5 +1,6 @@
 #include "Engine.h"
 #include "Level/Level.h"
+#include "Core/Input.h"
 #include <Windows.h>
 #include <stdint.h>
 #include <iostream>
@@ -14,6 +15,9 @@ namespace Craft
 	{
 		assert(!instance);
 		instance = this;
+
+		// 입력 객체 생성
+		input = std::make_unique<Input>();
 	}
 	Engine::~Engine()
 	{
@@ -102,6 +106,8 @@ namespace Craft
 		isQuit = true;
 	}
 
+
+
 	Engine& Engine::Get()
 	{
 		assert(instance);
@@ -111,13 +117,24 @@ namespace Craft
 
 	void Engine::ProcessInput()
 	{
+		assert(input);
+
+		// 입력 처리함수 호출
+		input->ProcessInput();
 	}
+
 
 	void Engine::OnInitialized()
 	{
 
 		// 레벨에 이벤트 전달
 		if (!mainLevel)
+		{
+			return;
+		}
+
+		// 레벨이 이미 초기화되있으면 처리 안함.
+		if (mainLevel->HasInitialized())
 		{
 			return;
 		}
@@ -161,6 +178,9 @@ namespace Craft
 
 	void Engine::SavePreviousInputStates()
 	{
+		assert(input);
+
+		input->SavePreviousStates();
 	}
 
 	void Engine::Shutdown()
