@@ -1,7 +1,12 @@
 #pragma once
 
+#include <memory>
+
 namespace Craft
 {
+	// 전방선언 (컴파일 시간 단축).
+	class Level;
+
 	class Engine
 	{
 		// 엔진 설정 구조체.
@@ -22,6 +27,14 @@ namespace Craft
 
 		// 엔진 종료 함수
 		void Quit();
+
+		// 레벨 추가 요청 함수
+		template<typename T, 
+			typename = std::enable_if_t<std::is_base_of<Level,T>::value>>
+			void AddNewLevel()
+		{
+			nextLevel = std::make_shared<T>();
+		}
 
 		// 싱글톤 접근 함수
 		static Engine& Get();
@@ -56,6 +69,12 @@ namespace Craft
 	
 		// 싱글톤을 위한 전역 객체
 		static Engine* instance;
+
+		// 메인 레벨
+		std::shared_ptr<Level> mainLevel;
+	
+		// 추가 요청된 레벨
+		std::shared_ptr<Level> nextLevel;
 	};
 }
 

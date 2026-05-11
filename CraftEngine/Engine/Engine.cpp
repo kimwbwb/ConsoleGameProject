@@ -1,4 +1,5 @@
 #include "Engine.h"
+#include "Level/Level.h"
 #include <Windows.h>
 #include <stdint.h>
 #include <iostream>
@@ -63,6 +64,28 @@ namespace Craft
 				// 업데이트된 결과를 화면에 그리는 함수.
 				Draw();
 
+				// 레벨 전환 처리
+				if (nextLevel)
+				{
+					// 기존 레벨 정리.
+					if (mainLevel)
+					{
+						mainLevel.reset();
+					}
+
+					// 이전 프레임에 전환 요청된 레벨을 메인 레벨로 설정.
+					mainLevel = std::move(nextLevel);
+
+					// 정리.
+					nextLevel.reset();
+				}
+
+				// 레벨 정리
+				if (mainLevel)
+				{
+					mainLevel->ProcessAddAndDestroyActors();
+				}
+
 				// 처리된 입력을 이전 프레임 입력으로 저장.
 				SavePreviousInputStates();
 
@@ -92,20 +115,48 @@ namespace Craft
 
 	void Engine::OnInitialized()
 	{
+
+		// 레벨에 이벤트 전달
+		if (!mainLevel)
+		{
+			return;
+		}
+
+		mainLevel->OnInitialized();
 	}
 
 	void Engine::BeginPlay()
 	{
+		// 레벨에 이벤트 전달
+		if (!mainLevel)
+		{
+			return;
+		}
+
+		mainLevel->BeginPlay();
 	}
 
 	void Engine::Tick(float deltaTime)
 	{
-		std::cout << "DeltaTime : " << deltaTime << " | FPS : " << (1.0f / deltaTime) << "\n";
+		//std::cout << "DeltaTime : " << deltaTime << " | FPS : " << (1.0f / deltaTime) << "\n";
+		// 레벨에 이벤트 전달
+		if (!mainLevel)
+		{
+			return;
+		}
+
+		mainLevel->Tick(deltaTime);
 	}
 
 	void Engine::Draw()
 	{
+		// 레벨에 이벤트 전달
+		if (!mainLevel)
+		{
+			return;
+		}
 
+		mainLevel->Draw();
 	}
 
 	void Engine::SavePreviousInputStates()
