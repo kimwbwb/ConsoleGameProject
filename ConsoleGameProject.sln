@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.37111.16 d17.14
+VisualStudioVersion = 17.14.37111.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CraftEngine", "CraftEngine\CraftEngine.vcxproj", "{954377FD-3825-42FD-8F06-28CB97AC45B6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SokobanGame", "SokobanGame\SokobanGame.vcxproj", "{A3A99C33-1C09-4D62-9FE5-3C32F793C898}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{954377FD-3825-42FD-8F06-28CB97AC45B6}.Debug|x64.Build.0 = Debug|x64
 		{954377FD-3825-42FD-8F06-28CB97AC45B6}.Release|x64.ActiveCfg = Release|x64
 		{954377FD-3825-42FD-8F06-28CB97AC45B6}.Release|x64.Build.0 = Release|x64
+		{A3A99C33-1C09-4D62-9FE5-3C32F793C898}.Debug|x64.ActiveCfg = Debug|x64
+		{A3A99C33-1C09-4D62-9FE5-3C32F793C898}.Debug|x64.Build.0 = Debug|x64
+		{A3A99C33-1C09-4D62-9FE5-3C32F793C898}.Release|x64.ActiveCfg = Release|x64
+		{A3A99C33-1C09-4D62-9FE5-3C32F793C898}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
