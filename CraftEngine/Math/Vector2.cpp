@@ -27,7 +27,7 @@ namespace Craft
 	{
 		return Vector2(x * other.x, y * other.y);
 	}
-	Vector2 Vector2::operator*(float value) const
+	Vector2 Vector2::operator*(int value) const
 	{
 		return Vector2(x * value, y * value);
 	}

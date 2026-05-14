@@ -8,6 +8,7 @@ namespace Craft
 	// 전방선언 (컴파일 시간 단축).
 	class Level;
 	class Input;
+	class Renderer;
 
 	class CRAFT_API Engine
 	{
@@ -80,6 +81,9 @@ namespace Craft
 
 		// 입력 시스템.
 		std::unique_ptr<Input> input;
+
+		// 렌더러
+		std::unique_ptr<Renderer> renderer;
 	};
 }
 
