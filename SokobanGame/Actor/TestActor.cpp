@@ -13,7 +13,8 @@ TestActor::TestActor()
 
 void TestActor::Tick(float deltaTime)
 {
-	Actor::Tick(deltaTime);
+	//Actor::Tick(deltaTime);
+	super::Tick(deltaTime);
 
 	// ESCÁ¾·á
 	if (Input::Get().GetKeyDown(VK_ESCAPE))

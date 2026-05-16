@@ -1,18 +1,22 @@
 #pragma once
 
 #include "Core\Core.h"
+#include "Core/CraftObject.h"
 #include "Math/Vector2.h"
 #include "Math/Color.h"
 #include <memory>
 #include <string>
+
 
 namespace Craft
 {
 	// 전방선언.
 	class Level;
 
-	class CRAFT_API Actor
+	class CRAFT_API Actor : public CraftObject
 	{
+		// 타입 정보 설정을 위한 매크로 추가
+		TYPE_DECLARATIONS(Actor,CraftObject)
 	public:
 		Actor(const std::string& image = "", const Vector2& position = Vector2::Zero,Color color = Color::White);
 		virtual ~Actor();
