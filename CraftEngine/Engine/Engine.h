@@ -47,6 +47,10 @@ namespace Craft
 		// 싱글톤 접근 함수
 		static Engine& Get();
 
+		// Getter
+		inline int GetWidth() const { return setting.width; }
+		inline int GetHeight() const { return setting.height; }
+
 	protected:
 		// 입력 처리 함수
 		void ProcessInput();
@@ -68,6 +72,8 @@ namespace Craft
 		// 정리 함수
 		void Shutdown();
 
+		// 엔진 설정 로드 함수
+		void LoadEngineSetting();
 	protected:
 		// 엔진 설정.
 		EngineSetting setting;

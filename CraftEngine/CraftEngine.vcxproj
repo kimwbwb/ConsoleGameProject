@@ -69,7 +69,8 @@
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>xcopy $(OutDir)CraftEngine.dll ..\Library\CraftEngine\$(Configuration)\ /e /y /i
-xcopy $(OutDir)CraftEngine.lib ..\Library\CraftEngine\$(Configuration)\ /e /y /i</Command>
+xcopy $(OutDir)CraftEngine.lib ..\Library\CraftEngine\$(Configuration)\ /e /y /i
+xcopy ..\Config\Setting.txt $(OutDir)..\Config\ /e /y /i</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -92,7 +93,8 @@ xcopy $(OutDir)CraftEngine.lib ..\Library\CraftEngine\$(Configuration)\ /e /y /i
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>xcopy $(OutDir)CraftEngine.dll ..\Library\CraftEngine\$(Configuration)\ /e /y /i
-xcopy $(OutDir)CraftEngine.lib ..\Library\CraftEngine\$(Configuration)\ /e /y /i</Command>
+xcopy $(OutDir)CraftEngine.lib ..\Library\CraftEngine\$(Configuration)\ /e /y /i
+xcopy ..\Config\Setting.txt $(OutDir)..\Config\ /e /y /i</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
