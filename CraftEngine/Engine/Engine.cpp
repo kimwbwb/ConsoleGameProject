@@ -21,7 +21,7 @@ namespace Craft
 		input = std::make_unique<Input>();
 
 		// 兄希君 梓端 持失
-		renderer = std::make_unique<Renderer>();
+		renderer = std::make_unique<Renderer>(Vector2(setting.width, setting.height));
 	}
 
 	Engine::~Engine()

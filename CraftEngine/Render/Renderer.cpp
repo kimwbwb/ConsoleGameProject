@@ -83,7 +83,7 @@ namespace Craft
 		command.image = image;
 		command.position = position;
 		command.color = color;
-		command.sortOrder = sortOrder;
+		command.sortingOrder = sortOrder;
 
 		// 렌더 큐에 명령 추가
 		renderQueue.emplace_back(command);
@@ -108,7 +108,13 @@ namespace Craft
 	void Renderer::Clear()
 	{
 		// 화면 지우는 콘솔 명령어 실행
-		system("cls");
+		//system("cls");
+
+		// 프레임 초기화
+		frame->Clear(screenSize);
+	
+		// 콘솔 버퍼 초기화
+		GetCurrentBuffer()->Clear();
 	}
 
 	void Renderer::DrawRenderQueue()
@@ -116,36 +122,78 @@ namespace Craft
 		// 렌더 큐 순회
 		for (const RenderCommand& command : renderQueue)
 		{
-			// Todo : 이중 버퍼 구현 시 그리기 순서를 비교해 그릴 지 여부 판단
+			// 그릴 문자열이 없으면 건너뛰기
+			if (command.image.empty())
+				continue;
 
-			// 콘솔 좌표 이동
-			COORD coord;
-			coord.X = static_cast<short>(command.position.x);
-			coord.Y = static_cast<short>(command.position.y);
-			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+			// y 위치가 화면을 벗어나면 건너뚜기
+			if (command.position.y < 0 || command.position.y >= screenSize.y)
+				continue;
+			
+			// 그릴 문자열의 길이 확인
+			const int length = static_cast<int>(command.image.length());
 
-			// 색상 지정
-			SetConsoleTextAttribute(
-				GetStdHandle(STD_OUTPUT_HANDLE),
-				static_cast<WORD>(command.color)
-			);
-			// 그리기 (글자 값)
-			std::cout << command.image;
-			// 콘솔 색상 되돌리기
-			SetConsoleTextAttribute(
-				GetStdHandle(STD_OUTPUT_HANDLE),
-				static_cast<WORD>(Color::White)
-			);
+			// 글자의 시작 위치
+			const int startX = command.position.x;
 
+			// 글자의 마지막 위치
+			const int endX = startX + length - 1;
+
+			// x 위치가 화면을 벗어나면 건너뛰기
+			if (endX < 0 || startX >= screenSize.x)
+				continue;
+
+			// 실제로 보여줄 글자의 시작 위치 및 마지막 위치 구하기
+			const int visibleStart = startX < 0 ? 0 : startX;
+			const int visibleEnd = endX >= screenSize.x ? screenSize.x - 1 : endX;
+
+			// 이미지를 배열로 순회하면서 프레임에 기록
+			for (int x = visibleStart; x <= visibleEnd; x++)
+			{
+				// 문자 인덱스
+				const int sourceIndex = x - startX;
+
+				// 문자를 기록할 2차원 배열의 인덱스
+				const int index = (command.position.y * screenSize.x) + x;
+
+				// 그리기 정렬 순서 비교
+				if (frame->sortingOrderArray[index] > command.sortingOrder)
+					continue;
+
+				// 2차원 배열에 글자 값 기록
+				frame->charInfoArray[index].Char.AsciiChar = command.image[sourceIndex];
+				frame->charInfoArray[index].Attributes = static_cast<WORD>(command.color);
+
+				// 그리기 정렬 순서 기록
+				frame->sortingOrderArray[index] = command.sortingOrder;
+			}
 		}
+
+		// 현재 백버퍼(현재 콘솔에서 사용하지 않는 버퍼)에 2차원 배열 기록
+		GetCurrentBuffer()->Draw(frame->charInfoArray.get());
 
 		// 렌더 큐 비우기
 		renderQueue.clear();
+
+		// 콘솔 초기화
+		SetConsoleTextAttribute(
+			GetCurrentBuffer()->GetScreenBuffer(),
+			static_cast<WORD>(Color::White)
+		);
 	}
 
 	void Renderer::Present()
 	{
-		// Todo : 이중 버퍼 구현 시 사용
+		// 현재 백버퍼를 화면에 활성화
+		SetConsoleActiveScreenBuffer(GetCurrentBuffer()->GetScreenBuffer());
+
+		// 버퍼 순번 교환 1 ->0 ,0 ->1
+		// One Minus X (1-x)
+		currentBufferIndex = 1 - currentBufferIndex;
 	}
 
+	const ScreenBuffer* const Renderer::GetCurrentBuffer() const
+	{
+		return screenBufferArray[currentBufferIndex].get();
+	}
 }

@@ -5,6 +5,7 @@
 #include "Math/Color.h"
 #include <vector>
 #include <string>
+#include <memory>
 
 namespace Craft
 {
@@ -28,7 +29,7 @@ namespace Craft
 			Color color = Color::White;
 
 			// 그리기 정렬 순서.
-			int sortOrder = -1;
+			int sortingOrder = -1;
 		};
 
 		// 화면 프레임 (글자 2차원 배열)
@@ -72,7 +73,7 @@ namespace Craft
 		void Present();
 		
 		// 현재 프레임을 그릴 버퍼 반환 함수
-		const ScreenBuffer* const GetScreenBuffer() const;
+		const ScreenBuffer* const GetCurrentBuffer() const;
 
 	private:
 		// 싱글톤 구현을 위한 전역 변수

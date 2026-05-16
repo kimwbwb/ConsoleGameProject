@@ -18,6 +18,11 @@ namespace Craft
 			// 타겟 프레임 속도
 			float framerate = 120.0f;
 			
+			// 화면 가로 크기
+			int width = 60;
+
+			// 화면 세로 크기
+			int height = 25;
 		};
 
 
