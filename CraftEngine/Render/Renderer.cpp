@@ -1,34 +1,79 @@
 #include "Renderer.h"
+#include "ScreenBuffer.h"
 #include <cassert>
 #include <Windows.h>
 #include <iostream>
 
 namespace Craft
 {
+	Renderer::Frame::Frame(int bufferCount)
+	{
+		// 2차원 글자 배열 및 그리기 순서 배열 객체 생성
+		charInfoArray = std::make_unique<CHAR_INFO[]>(bufferCount);
+		sortingOrderArray = std::make_unique<int[]>(bufferCount);
+	}
+
+	Renderer::Frame::~Frame()
+	{
+	}
+	void Renderer::Frame::Clear(const Vector2& screenSize)
+	{
+		// 이중 루프를 순회하면서 값 정리
+		const int width = screenSize.x;
+		const int height = screenSize.y;
+
+		for (int y = 0; y < height; y++)
+		{
+			for (int x = 0; x < width; x++)
+			{
+				// 2차원 배열 인덱스(x,y)를 1차원 인덱스로 변환
+				const int index = (y * width) + x;
+
+				// 글자 값 초기화
+				CHAR_INFO& info = charInfoArray[index];
+				info.Char.AsciiChar = ' ';
+				info.Attributes = 0;
+
+				// 그리기 순서 값 초기화
+				sortingOrderArray[index] = -1;
+			}
+		}
+
+	}
+
+	// ---------------------------Frame-------------------------- //
+	
+	
 	Renderer* Renderer::instance = nullptr;
 
-	Renderer::Renderer()
+	Renderer::Renderer(const Vector2& screenSize)
+		: screenSize(screenSize)
 	{
 		assert(!instance);
 		instance = this;
 
-		// 콘솔 커서 안보이게 설정
-		CONSOLE_CURSOR_INFO info;
-		info.dwSize = 1;
-		info.bVisible = false;
-		SetConsoleCursorInfo((GetStdHandle(STD_OUTPUT_HANDLE)), &info);
+		// 이중 버퍼에 사용할 버퍼 생성
+		screenBufferArray[0] = std::make_unique<ScreenBuffer>(screenSize);
+		screenBufferArray[0]->Clear();
+		
+		screenBufferArray[1] = std::make_unique<ScreenBuffer>(screenSize);
+		screenBufferArray[1]->Clear();
 
+		// 0번 콘솔 버퍼를 창에 설정
+		SetConsoleActiveScreenBuffer(screenBufferArray[0]->GetScreenBuffer());
+
+		// 프레임 생성
+		const int bufferCount = screenSize.x * screenSize.y;
+		frame = std::make_unique<Frame>(bufferCount);
+		frame->Clear(screenSize);
 	}
 
 	Renderer::~Renderer()
 	{
 		instance = nullptr;
 
-		// 콘솔 커서 안보이게 설정
-		CONSOLE_CURSOR_INFO info;
-		info.dwSize = 1;
-		info.bVisible = true;
-		SetConsoleCursorInfo((GetStdHandle(STD_OUTPUT_HANDLE)), &info);
+		// 콘솔창 원래대로 복구
+		SetConsoleActiveScreenBuffer(GetStdHandle(STD_OUTPUT_HANDLE));
 	}
 
 	void Renderer::Submit(const std::string& image, Vector2 position, Color color, int sortOrder)
@@ -102,4 +147,5 @@ namespace Craft
 	{
 		// Todo : 이중 버퍼 구현 시 사용
 	}
+
 }

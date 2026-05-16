@@ -55,9 +55,46 @@ namespace Craft
 
 	void ScreenBuffer::Clear() const
 	{
+		// 콘솔을 지우는 함수
+		// 공백 문자를 화면 크기 전체에 한 번에 설정.
+		COORD coord = {};
+		coord.X = 0;
+		coord.Y = 0;
+
+		// 화면ㅇ ㅔ설정된 글자 수 (출력용)
+		DWORD writtenCount = 0;
+		BOOL result = FillConsoleOutputCharacterA(screenBuffer, ' ', screenSize.x * screenSize.y, coord, &writtenCount);
+	
+		assert(result);
 	}
 
 	void ScreenBuffer::Draw(const CHAR_INFO* const charInfo) const
 	{
+		// 전달된 글자 배열을 화면에 한번에 설정
+		
+		COORD bufferSize = {};
+		bufferSize.X = static_cast<short>(screenSize.x);
+		bufferSize.Y = static_cast<short>(screenSize.y);
+
+		COORD bufferPosition = {};
+		bufferPosition.X = 0;
+		bufferPosition.Y = 0;
+
+		// 설정할 글자 영역
+		SMALL_RECT writeRegion = {};
+		writeRegion.Top = 0;
+		writeRegion.Left = 0;
+		writeRegion.Right = static_cast<short>(screenSize.x);
+		writeRegion.Bottom = static_cast<short>(screenSize.y);
+
+		BOOL result = WriteConsoleOutputA(
+			screenBuffer,
+			charInfo,
+			bufferSize,
+			bufferPosition,
+			&writeRegion
+		);
+
+		assert(result);
 	}
 }

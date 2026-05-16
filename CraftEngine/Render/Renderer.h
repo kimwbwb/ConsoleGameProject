@@ -9,6 +9,10 @@
 namespace Craft
 {
 	// 화면에 그리는 기능을 제공
+	
+	// 전방 선언
+	class ScreenBuffer;
+
 	class CRAFT_API Renderer
 	{
 		// 화면에 그릴 데이터를 명령으로 모아둘 구조체
@@ -27,8 +31,25 @@ namespace Craft
 			int sortOrder = -1;
 		};
 
+		// 화면 프레임 (글자 2차원 배열)
+		struct Frame
+		{
+			// 화면의 가로 x 세로 크기를 배열의 크기로 설정
+			Frame(int bufferCount);
+			~Frame();
+
+			// 프레임 초기화 함수
+			void Clear(const Vector2& screenSize);
+
+			// 문자 2차원 배열
+			std::unique_ptr<CHAR_INFO[]> charInfoArray;
+			
+			// 그리기 정렬 값 2차원 배열
+			std::unique_ptr<int[]> sortingOrderArray;
+		};
+
 	public:
-		Renderer();
+		Renderer(const Vector2& screenSize);
 		~Renderer();
 
 		// 장면을 구성하는 모든 객체(액터)가 화면에 그릴 데이터를 전달하는 함수.
@@ -49,6 +70,9 @@ namespace Craft
 
 		// 이중 버퍼 구현 시 버퍼를 교환하는 함수.
 		void Present();
+		
+		// 현재 프레임을 그릴 버퍼 반환 함수
+		const ScreenBuffer* const GetScreenBuffer() const;
 
 	private:
 		// 싱글톤 구현을 위한 전역 변수
@@ -56,5 +80,17 @@ namespace Craft
 
 		// 이번 프레임에 화명네 그릴 데이터를 모아둔 동적 배열(큐).
 		std::vector<RenderCommand> renderQueue;
+	
+		// 화면 크기
+		Vector2 screenSize;
+
+		// 글자/그리기 순서 2차원 배열을 관리하는 프레임 객체
+		std::unique_ptr<Frame> frame;
+
+		// 화면 콘솔 버퍼 (이중 버퍼)
+		std::unique_ptr<ScreenBuffer> screenBufferArray[2] = {};
+
+		// 백버퍼 인덱스
+		int currentBufferIndex = 0;
 	};
 }
