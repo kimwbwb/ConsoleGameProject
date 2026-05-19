@@ -1,5 +1,5 @@
 #include "Engine/Engine.h"
-#include "Level/TestLevel.h"
+#include "Level/GameLevel.h"
 
 using namespace Craft;
 
@@ -9,6 +9,6 @@ int main()
 	// dynamic_cast
 
 	Engine engine;
-	engine.AddNewLevel<TestLevel>();
+	engine.AddNewLevel<GameLevel>();
 	engine.Run();
 }
