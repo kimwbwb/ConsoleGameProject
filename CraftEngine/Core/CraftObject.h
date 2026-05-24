@@ -30,7 +30,7 @@ namespace Craft
 
 		// 스마트 포인터 형변환 유틸리티 함수
 		template<typename T, typename U>
-		std::shared_ptr<T> Cast(const std::shared_ptr<U>* object)
+		std::shared_ptr<T> Cast(const std::shared_ptr<U>& object)
 		{
 			// 예외 처리
 			if (!object)
@@ -66,7 +66,7 @@ public:																\
 	{																\
 		return Type::TypeIdClass();									\
 	}																\
-		virtual bool Is(size_t id) const override					\
+	virtual bool Is(size_t id) const override						\
 	{																\
 		return (id == TypeIdClass()) ? true : ParentType::Is(id);	\
 	}

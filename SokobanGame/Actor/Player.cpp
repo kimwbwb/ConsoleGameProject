@@ -1,5 +1,10 @@
 #include "Player.h"
+#include "Player.h"
+#include "Player.h"
 #include "Core/Input.h"
+#include "Game/Game.h"
+#include "Interface/ICanPlayerMove.h"
+#include "Level/Level.h"
 #include <iostream>
 #include <Windows.h>
 
@@ -19,27 +24,56 @@ void Player::Tick(float deltaTime)
 	// ESC종료
 	if (Input::Get().GetKeyDown(VK_ESCAPE))
 	{
-		QuitGame();
+		Game& game = dynamic_cast<Game&>(Engine::Get());
+		game.ToggleMenu();
 	}
+
+	// 인터페이스에 접근
+	std::shared_ptr<ICanPlayerMove> canPlayerMove
+		= std::dynamic_pointer_cast<ICanPlayerMove>(GetOwner());
+
+	if (!canPlayerMove)
+		return;
 
 	// 방향키 이동
-	if (Input::Get().GetKey(VK_LEFT) && position.x > 0)
+	if (Input::Get().GetKeyDown(VK_LEFT))
 	{
-		position.x -= 1;
+		Vector2 newPosition = position;
+		newPosition.x -= 1;
+
+		if (canPlayerMove->CanMove(position, newPosition))
+		{
+			SetPosition(newPosition);
+		}
 	}
 
-	if (Input::Get().GetKey(VK_RIGHT) && position.x < 39)
+	if (Input::Get().GetKeyDown(VK_RIGHT))
 	{
-		position.x += 1;
+		Vector2 newPosition = position;
+		newPosition.x += 1;
+		if (canPlayerMove->CanMove(position, newPosition))
+		{
+			SetPosition(newPosition);
+		}
 	}
 
-	if (Input::Get().GetKey(VK_UP) && position.y > 0)
+	if (Input::Get().GetKeyDown(VK_UP))
 	{
-		position.y -= 1;
+		Vector2 newPosition = position;
+		newPosition.y -= 1;
+		if (canPlayerMove->CanMove(position, newPosition))
+		{
+			SetPosition(newPosition);
+		}
 	}
 
-	if (Input::Get().GetKey(VK_DOWN) && position.y < 24)
+	if (Input::Get().GetKeyDown(VK_DOWN))
 	{
-		position.y += 1;
+		Vector2 newPosition = position;
+		newPosition.y += 1;
+		if (canPlayerMove->CanMove(position, newPosition))
+		{
+			SetPosition(newPosition);
+		}
 	}
 }
