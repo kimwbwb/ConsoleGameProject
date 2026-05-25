@@ -2,6 +2,7 @@
 #include "Util/Util.h"
 #include "Engine/Engine.h"
 #include "Level/Level.h"
+#include "EnemyBullet.h"
 
 using namespace Craft;
 
@@ -74,5 +75,7 @@ void Enemy::Tick(float deltaTime)
 	// 발사 처리
 	timer.Reset();
 
-	// Todo : 적 탄약 액터 생성후 탄약 발사
+	// 탄약 발사
+	Vector2 bulletPosition(position.x + (width / 2), position.y);
+	GetOwner()->SpawnActor<EnemyBullet>(bulletPosition,Util::RandomRange(10.0f,20.0f));
 }
