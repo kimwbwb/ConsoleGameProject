@@ -85,4 +85,14 @@ namespace Craft
 		// Á¤¸®.
 		addRequestedActorList.clear();
 	}
+	void Level::SavePreviousActorStates()
+	{
+		for (const std::shared_ptr<Actor>& actor : actorList)
+		{
+			if (!actor->IsActive())
+				continue;
+			
+			actor->SavePreviousState();
+		}
+	}
 }

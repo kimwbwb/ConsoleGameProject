@@ -39,6 +39,10 @@ namespace Craft
 		Renderer::Get().Submit(image, position, color, sortingOrder);
 	}
 
+	void Actor::OnCollision(const std::shared_ptr<Actor>& other)
+	{
+	}
+
 	void Actor::Destroy()
 	{
 		// 액터 삭제 예약
@@ -49,6 +53,10 @@ namespace Craft
 	{
 		// 엔진 종료 요청
 		Engine::Get().Quit();
+	}
+	void Actor::SavePreviousState()
+	{
+		previousPosition = position;
 	}
 	std::shared_ptr<Level> Actor::GetOwner()
 	{
