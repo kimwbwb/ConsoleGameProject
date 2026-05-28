@@ -41,6 +41,14 @@ namespace Craft
 
 	void Actor::OnCollision(const std::shared_ptr<Actor>& other)
 	{
+
+	}
+
+	void Actor::ChangeImage(const std::string& newImage)
+	{
+		// 새로운 문자열 복사
+		width = static_cast<int>(newImage.size());
+		image = newImage;
 	}
 
 	void Actor::Destroy()

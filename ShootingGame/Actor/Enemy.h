@@ -24,6 +24,8 @@ private:
 	// Tick 이벤트
 	virtual void Tick(float deltaTime) override;
 
+	// 충돌 이벤트
+	virtual void OnCollision(const std::shared_ptr<Actor>& other);
 private:
 	// 이동 방향
 	MoveDirection direction = MoveDirection::None;

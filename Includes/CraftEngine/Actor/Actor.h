@@ -29,6 +29,9 @@ namespace Craft
 		// 충돌 시 호출될 충돌 이벤트 함수
 		virtual void OnCollision(const std::shared_ptr<Actor>& other);
 
+		// 액터의 이미지(문자열) 값 변경 함수
+		void ChangeImage(const std::string& newImage);
+
 		// 액터를 레벨에서 제거할 때 사용할 함수,
 		void Destroy();
 
