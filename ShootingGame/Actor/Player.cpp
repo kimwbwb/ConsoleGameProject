@@ -5,6 +5,7 @@
 #include "Level/Level.h"
 #include "EnemyBullet.h"
 #include "DestroyEffect.h"
+#include "GameManager.h"
 
 using namespace Craft;
 
@@ -96,9 +97,17 @@ void Player::OnCollision(const std::shared_ptr<Actor>& other)
 		{
 			// 플레이어가 죽은 위치에 죽음 이펙트 생성
 			GetOwner()->SpawnActor<DestroyEffect>(position);
+			
+			// 게임 관리자에 플레이어 죽음 알림
+			std::shared_ptr<GameManager> gameManager
+				= GetOwner()->GetActorOfType<GameManager>();
+			if (gameManager)
+			{
+				gameManager->SetPlayerDead(position);
+			}
 		}
 
-		// Todo : 게임 관리자에 플레이어 죽음 알림
+		
 	}
 }
 

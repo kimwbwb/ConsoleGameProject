@@ -5,6 +5,7 @@
 #include "EnemyBullet.h"
 #include "PlayerBullet.h"
 #include "DestroyEffect.h"
+#include "GameManager.h"
 
 using namespace Craft;
 
@@ -101,6 +102,14 @@ void Enemy::OnCollision(const std::shared_ptr<Actor>& other)
 			// ÀûÀÌ Á×Àº À§Ä¡¿¡ ÀÌÆåÆ® »ý¼º
 			GetOwner()->SpawnActor<DestroyEffect>(position);
 		}
-		// Todo : Á¡¼ö È¹µæ Ã³¸®
+		// Á¡¼ö È¹µæ Ã³¸®
+		std::shared_ptr<GameManager> gameManager
+			= GetOwner()->GetActorOfType<GameManager>();
+
+		// °ÔÀÓ °ü¸®ÀÚ¿¡ Á¡¼ö È¹µæ ¾Ë¸²
+		if (gameManager)
+		{
+			gameManager->SetScore(gameManager->GetScore() + 1);
+		}
 	}
 }

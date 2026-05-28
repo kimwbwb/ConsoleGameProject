@@ -243,7 +243,7 @@ bool GameLevel::CanMove(const Craft::Vector2& playerPosition, const Craft::Vecto
 						// 박스 이동 처리(플레이어가 박스를 미는 효과)
 						boxActor->SetPosition(newPosition);
 
-						// Todo : 점수 확인 함수를 구현한 후 게임 클리어 확인
+						// 점수 확인 함수를 구현한 후 게임 클리어 확인
 						isGameClear = CheckGameClear();
 						return true;
 					}
