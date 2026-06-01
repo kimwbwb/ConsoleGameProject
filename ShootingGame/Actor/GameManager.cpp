@@ -14,7 +14,7 @@ void GameManager::SetPlayerDead(const Vector2& deadPosition)
 	if (isPlayerDead)
 		return;
 
-	// 플레리어 죽음 상태 업데이트
+	// 플레이어 죽음 상태 업데이트
 	isPlayerDead = true;
 
 	// 죽은 위치 저장

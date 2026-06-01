@@ -86,6 +86,9 @@ void Player::OnCollision(const std::shared_ptr<Actor>& other)
 	// 충돌한 액터가 적 탄약인지 확인
 	if (other->IsTypeOf<EnemyBullet>())
 	{
+		// 폭발 사운드 재생
+		Engine::Get().PlayOneShot("Explosion.wav");
+
 		// 플레이어 제거
 		Destroy();
 
@@ -138,6 +141,9 @@ void Player::Fire()
 
 	// 탄약 생성 요청
 	GetOwner()->SpawnActor<PlayerBullet>(bulletPosition);
+
+	// 사운드 효과 재생
+	Engine::Get().PlayOneShot("Restro_Laser_Shoot.wav");
 }
 
 void Player::FireInterval()

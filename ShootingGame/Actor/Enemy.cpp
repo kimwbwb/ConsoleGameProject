@@ -90,6 +90,9 @@ void Enemy::OnCollision(const std::shared_ptr<Actor>& other)
 	// 충돌한 물체가 플레이어 탄약인지 확인
 	if (other->IsTypeOf<PlayerBullet>())
 	{
+		// 사운드 효과 재생
+		Engine::Get().PlayOneShot("Explosion.wav");
+
 		// 적 액터 제거
 		Destroy();
 
